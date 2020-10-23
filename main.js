@@ -132,8 +132,10 @@ btnBuscar.addEventListener("click",()=>{
 })
 btnListar.addEventListener("click",()=>{
     crearTabla();
+    let valMer = 0;
     console.log(productos);
     let tabla = document.querySelector("#tabla");
+    let merc = document.querySelector("#merc");
     productos.forEach(p =>{
         let ren = tabla.insertRow(-1);
         let col = ren.insertCell(0);
@@ -146,12 +148,16 @@ btnListar.addEventListener("click",()=>{
         col2.textContent = p.desc;
         col3.textContent = p.cant;
         col4.textContent = p.cost;
+        valMer += (parseInt(p.cant) * parseInt(p.cost));
     })
+    merc.textContent = "El valor de la mercancia es: $"+valMer
 })
 btnListarI.addEventListener("click",()=>{
     crearTabla();
+    let valMer = 0;
     invertir(productos);
     let tabla = document.querySelector("#tabla");
+    let merc = document.querySelector("#merc");
     productos.forEach(p =>{
         let ren = tabla.insertRow(-1);
         let col = ren.insertCell(0);
@@ -164,7 +170,9 @@ btnListarI.addEventListener("click",()=>{
         col2.textContent = p.desc;
         col3.textContent = p.cant;
         col4.textContent = p.cost;
+        valMer += (parseInt(p.cant) * parseInt(p.cost));
     })
+    merc.textContent = "El valor de la mercancia es: $"+valMer
     invertir(productos);
 })
 function encontrar(vector,codigo){
@@ -186,7 +194,8 @@ function crearTabla(){
     <th>Cantidad</th>
     <th>Costo</th>
     <thead>
-    <tbody id="tabla" style="text-align:center"></tbody>`);
+    <tbody id="tabla" style="text-align:center"></tbody>
+    <p id ="merc"></p>`);
 }
 function invertir(vector){
     let temp;
