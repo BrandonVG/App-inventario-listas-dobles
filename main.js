@@ -23,6 +23,13 @@ class Inventario{
         }
         else{
             aux = this.inicio;
+            while (aux != null){
+                if (producto.codigo == aux.codigo){
+                    return false;
+                }
+                aux = aux.siguiente;
+            }
+            aux = this.inicio;
             while(aux.siguiente != null){
                 aux = aux.siguiente;
             }
@@ -30,6 +37,13 @@ class Inventario{
         }
     }
     agregarInicio(producto){
+        aux = this.inicio;
+        while(aux != null){
+            if (aux.codigo == producto.codigo){
+                return false;
+            }
+            aux = aux.siguiente;
+        }
         producto.siguiente = this.inicio;
         this.inicio = producto;
     }
@@ -139,6 +153,30 @@ class Inventario{
         }
         merc.textContent = "El valor de la mercancia es: $"+valMer;
     }
+    agregarPos(producto,posicion){
+        if(this.inicio == null){
+            return false;
+        }
+        aux = this.inicio;
+        while (aux != null){
+            if (producto.codigo == aux.codigo){
+                return false;
+            }
+            aux = aux.siguiente;
+        }
+        aux = this.inicio;
+        let i = 1;
+        while(i < posicion-1 && aux != null){
+            aux = aux.siguiente;
+            i++;
+        }
+        if(aux == null){
+            return false;
+        }
+        let temp = aux.siguiente;
+        aux.siguiente = producto;
+        aux.siguiente.siguiente = temp;
+    }
 }
 class Producto{
     constructor(codigo,nombre,desc,cantidad,costo,posicion){
@@ -180,9 +218,45 @@ btnAgregar.addEventListener("click",()=>{
         let validacion = validar();
         if (validacion == 1){
             let nuevo = new Producto(codigo.value,nombre.value,desc.value,cantidad.value,costo.value);
-            inv.agregar(nuevo);
-            div.textContent="";
-            div.insertAdjacentHTML("beforeend","<p>Producto agregado.</p>");
+            let agrgar = inv.agregar(nuevo);
+            if (agrgar == false){
+                div.textContent="";
+                div.insertAdjacentHTML("beforeend","<p>El codigo del producto ya existe.</p>");
+            }
+            else{
+                div.textContent="";
+                div.insertAdjacentHTML("beforeend","<p>Producto agregado.</p>");
+            }
+        }
+    }
+    else if (pos.value == 1){
+        let validacion = validar();
+        if (validacion == 1){
+            let nuevo = new Producto(codigo.value,nombre.value,desc.value,cantidad.value,costo.value);
+            let agrg = inv.agregarInicio(nuevo);
+            if (agrg == false){
+                div.textContent="";
+                div.insertAdjacentHTML("beforeend","<p>El codigo del producto ya existe.</p>");
+            }
+            else{
+                div.textContent="";
+                div.insertAdjacentHTML("beforeend","<p>Producto agregado.</p>");
+            }
+        }
+    }
+    else{
+        let validacion = validar();
+        if (validacion == 1){
+            let nuevo = new Producto(codigo.value,nombre.value,desc.value,cantidad.value,costo.value);
+            let agregarpos = inv.agregarPos(nuevo,pos.value);
+            if (agregarpos == false){
+                div.textContent="";
+                div.insertAdjacentHTML("beforeend","<p>No se ha podido agregar, no hay un elemento en la posicion indicada o el codigo ya existe.</p>");  
+            }
+            else{
+                div.textContent="";
+                div.insertAdjacentHTML("beforeend","<p>Producto agregado.</p>");
+            }
         }
     }
 });
@@ -233,9 +307,16 @@ btnAgregarIn.addEventListener("click",()=>{
     let validacion = validar();
         if (validacion == 1){
             let nuevo = new Producto(codigo.value,nombre.value,desc.value,cantidad.value,costo.value);
-            inv.agregarInicio(nuevo);
-            div.textContent="";
-            div.insertAdjacentHTML("beforeend","<p>Producto agregado.</p>");
+            let agregar = inv.agregarInicio(nuevo);
+            if (agregar == false){
+                div.textContent="";
+                div.insertAdjacentHTML("beforeend","<p>El codigo del producto ya existe.</p>");
+            }
+            else{
+                div.textContent="";
+                div.insertAdjacentHTML("beforeend","<p>Producto agregado.</p>");
+            }
+            
         }
 })
 btnBorrarIn.addEventListener("click",()=>{
