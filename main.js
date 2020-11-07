@@ -111,6 +111,34 @@ class Inventario{
         }
         merc.textContent = "El valor de la mercancia es: $"+valMer;
     }
+    listarInverso(){
+        crearTabla();
+        let valMer = 0;
+        let tabla = document.querySelector("#tabla");
+        let merc = document.querySelector("#merc");
+        if (this.inicio == null){
+            div.textContent="";
+            div.insertAdjacentHTML("beforeend","No hay productos");
+            return false;
+        }
+        aux = this.inicio;
+        while (aux != null){
+            let ren = tabla.insertRow(0);
+            let col = ren.insertCell(0);
+            let col1 = ren.insertCell(1);
+            let col2 = ren.insertCell(2);
+            let col3 = ren.insertCell(3);
+            let col4 = ren.insertCell(4);
+            col.textContent = aux.codigo;
+            col1.textContent = aux.nombre;
+            col2.textContent = aux.desc;
+            col3.textContent = aux.cantidad;
+            col4.textContent = aux.costo;
+            valMer += (parseInt(aux.cantidad) * parseInt(aux.costo));
+            aux = aux.siguiente;
+        }
+        merc.textContent = "El valor de la mercancia es: $"+valMer;
+    }
 }
 class Producto{
     constructor(codigo,nombre,desc,cantidad,costo,posicion){
@@ -199,7 +227,7 @@ btnListar.addEventListener("click",()=>{
     inv.listar();
 })
 btnListarI.addEventListener("click",()=>{
-    
+    inv.listarInverso();
 })
 btnAgregarIn.addEventListener("click",()=>{
     let validacion = validar();
