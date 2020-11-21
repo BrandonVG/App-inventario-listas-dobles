@@ -34,6 +34,7 @@ class Inventario{
                 aux = aux.siguiente;
             }
             aux.siguiente = producto;
+            aux.siguiente.anterior = aux;
         }
     }
     agregarInicio(producto){
@@ -45,11 +46,13 @@ class Inventario{
             aux = aux.siguiente;
         }
         producto.siguiente = this.inicio;
+        producto.siguiente.anterior = producto;
         this.inicio = producto;
     }
     borrarInicio(){
-        aux =this.inicio;
+        aux = this.inicio;
         this.inicio = this.inicio.siguiente;
+        this.inicio.anterior = null;
         aux.siguiente = null;
         return aux;
     }
@@ -63,11 +66,12 @@ class Inventario{
         else{
             aux = this.inicio;
             while (aux.siguiente.codigo != codigo && aux.siguiente != null){
-                aux= aux.siguiente;
+                aux = aux.siguiente;
             }
             if (aux.siguiente != null){
                 let temp = aux.siguiente;
                 aux.siguiente = temp.siguiente;
+                temp.siguiente.anterior = aux;
                 temp.siguiente = null;
                 return temp;
             }
@@ -99,6 +103,7 @@ class Inventario{
     }
     listar(){
         crearTabla();
+        console.log(inv);
         let valMer = 0;
         let tabla = document.querySelector("#tabla");
         let merc = document.querySelector("#merc");
@@ -175,18 +180,21 @@ class Inventario{
         }
         let temp = aux.siguiente;
         aux.siguiente = producto;
+        aux.siguiente.anterior = aux;
         aux.siguiente.siguiente = temp;
+        aux.siguiente.siguiente.anterior = aux.siguiente;
+
     }
 }
 class Producto{
-    constructor(codigo,nombre,desc,cantidad,costo,posicion){
+    constructor(codigo,nombre,desc,cantidad,costo){
         this.codigo = codigo;
         this.nombre = nombre;
         this.desc = desc;
         this.cantidad = cantidad;
         this.costo = costo;
-        this.posicion = posicion;
         this.siguiente = null;
+        this.anterior = null;
     }
 }
 function crearTabla(){
